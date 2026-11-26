@@ -35,7 +35,7 @@ In this repository, the feature flags are not stored in code as true/false value
 
 ### Main backend wiring
 
-The main Web API host connects to Azure App Configuration in [src/CAT.Portal.WebApi/Catalyst.Core/Configuration/AzureAppConfig/AzureAppConfigurationBuilder.cs](../src/CAT.Portal.WebApi/Catalyst.Core/Configuration/AzureAppConfig/AzureAppConfigurationBuilder.cs).
+The main Web API host connects to Azure App Configuration in `src/CAT.Portal.WebApi/Catalyst.Core/Configuration/AzureAppConfig/AzureAppConfigurationBuilder.cs`.
 
 That builder:
 
@@ -45,7 +45,7 @@ That builder:
 - Configures refresh behavior
 - Registers a sentinel key for broader config refresh
 
-The main host then registers feature management in [src/CAT.Portal.WebApi/Catalyst.Web.Host/Startup/Startup.cs](../src/CAT.Portal.WebApi/Catalyst.Web.Host/Startup/Startup.cs):
+The main host then registers feature management in `src/CAT.Portal.WebApi/Catalyst.Web.Host/Startup/Startup.cs`:
 
 - `services.AddFeatureManagement()`
 - `services.AddAzureAppConfiguration()`
@@ -55,7 +55,7 @@ That means the backend is wired to evaluate feature flags through `IFeatureManag
 
 ### Backend API that exposes enabled flags
 
-There is already an app service in [src/CAT.Portal.WebApi/Catalyst.Application/Configuration/FeatureManagement/FeatureManagementAppService.cs](../src/CAT.Portal.WebApi/Catalyst.Application/Configuration/FeatureManagement/FeatureManagementAppService.cs).
+There is already an app service in `src/CAT.Portal.WebApi/Catalyst.Application/Configuration/FeatureManagement/FeatureManagementAppService.cs`.
 
 It does this:
 
@@ -67,7 +67,7 @@ The method is `GetEnabledFeatures()`.
 
 ### Angular frontend wiring
 
-The Angular app uses [src/CAT.Portal.Web/src/shared/feature-management/feature-manager.service.ts](../src/CAT.Portal.Web/src/shared/feature-management/feature-manager.service.ts).
+The Angular app uses `src/CAT.Portal.Web/src/shared/feature-management/feature-manager.service.ts`.
 
 That service:
 
@@ -76,11 +76,11 @@ That service:
 - Stores those enabled names in memory
 - Lets UI code ask `featureOn(featureName)`
 
-The generated client route lives in [src/CAT.Portal.Web/src/shared/service-proxies/service-proxies.ts](../src/CAT.Portal.Web/src/shared/service-proxies/service-proxies.ts).
+The generated client route lives in `src/CAT.Portal.Web/src/shared/service-proxies/service-proxies.ts`.
 
 ### Angular startup behavior
 
-The Angular app loads feature flags during startup using `APP_INITIALIZER` in [src/CAT.Portal.Web/src/root.module.ts](../src/CAT.Portal.Web/src/root.module.ts).
+The Angular app loads feature flags during startup using `APP_INITIALIZER` in `src/CAT.Portal.Web/src/root.module.ts`.
 
 During app startup:
 
@@ -93,7 +93,7 @@ This means Angular pages, guards, and components can immediately ask whether a f
 
 ### Where feature names live in Angular
 
-Frontend feature flag names are centralized in [src/CAT.Portal.Web/src/shared/feature-management/feature-flags.ts](../src/CAT.Portal.Web/src/shared/feature-management/feature-flags.ts).
+Frontend feature flag names are centralized in `src/CAT.Portal.Web/src/shared/feature-management/feature-flags.ts`.
 
 Examples include:
 
@@ -117,7 +117,7 @@ There are four main things that drive feature management:
 
 ### Main Web API configuration
 
-In [src/CAT.Portal.WebApi/Catalyst.Web.Host/appsettings.json](../src/CAT.Portal.WebApi/Catalyst.Web.Host/appsettings.json), the important settings are under `FoundationConfigurationOptions`:
+In `src/CAT.Portal.WebApi/Catalyst.Web.Host/appsettings.json`, the important settings are under `FoundationConfigurationOptions`:
 
 - `ConnectionString`
 - `AppName = CatPortalWebApi`
@@ -133,7 +133,7 @@ In [src/CAT.Portal.WebApi/Catalyst.Web.Host/appsettings.json](../src/CAT.Portal.
 
 ### Environment labels
 
-In [src/CAT.Portal.WebApi/Catalyst.Core/Configuration/AzureAppConfig/AzureAppConfigurationBuilder.cs](../src/CAT.Portal.WebApi/Catalyst.Core/Configuration/AzureAppConfig/AzureAppConfigurationBuilder.cs), the app loads:
+In `src/CAT.Portal.WebApi/Catalyst.Core/Configuration/AzureAppConfig/AzureAppConfigurationBuilder.cs`, the app loads:
 
 - Unlabeled settings
 - Settings labeled for the current environment
@@ -146,7 +146,7 @@ A good UI-facing example is:
 
 - `SubmitterProductDetails.EnableNewView`
 
-In Angular, this is defined in [src/CAT.Portal.Web/src/shared/feature-management/feature-flags.ts](../src/CAT.Portal.Web/src/shared/feature-management/feature-flags.ts) as:
+In Angular, this is defined in `src/CAT.Portal.Web/src/shared/feature-management/feature-flags.ts` as:
 
 - `FeatureFlags.SubmitterProductDetailsEnableNewView = "SubmitterProductDetails.EnableNewView"`
 
@@ -164,13 +164,13 @@ A feature flag named `SubmitterProductDetails.EnableNewView` is created or updat
 
 ### 2. Backend host loads feature flags
 
-The portal host connects to Azure App Configuration through [src/CAT.Portal.WebApi/Catalyst.Core/Configuration/AzureAppConfig/AzureAppConfigurationBuilder.cs](../src/CAT.Portal.WebApi/Catalyst.Core/Configuration/AzureAppConfig/AzureAppConfigurationBuilder.cs).
+The portal host connects to Azure App Configuration through `src/CAT.Portal.WebApi/Catalyst.Core/Configuration/AzureAppConfig/AzureAppConfigurationBuilder.cs`.
 
-The host wiring in [src/CAT.Portal.WebApi/Catalyst.Web.Host/Startup/Startup.cs](../src/CAT.Portal.WebApi/Catalyst.Web.Host/Startup/Startup.cs) registers the feature-management services and refresh middleware.
+The host wiring in `src/CAT.Portal.WebApi/Catalyst.Web.Host/Startup/Startup.cs` registers the feature-management services and refresh middleware.
 
 ### 3. Backend evaluates enabled features
 
-[src/CAT.Portal.WebApi/Catalyst.Application/Configuration/FeatureManagement/FeatureManagementAppService.cs](../src/CAT.Portal.WebApi/Catalyst.Application/Configuration/FeatureManagement/FeatureManagementAppService.cs) uses `IFeatureManager` to determine which flags are enabled.
+`src/CAT.Portal.WebApi/Catalyst.Application/Configuration/FeatureManagement/FeatureManagementAppService.cs` uses `IFeatureManager` to determine which flags are enabled.
 
 It returns the enabled feature names from:
 
@@ -178,15 +178,15 @@ It returns the enabled feature names from:
 
 ### 4. Angular client calls the backend
 
-The generated proxy in [src/CAT.Portal.Web/src/shared/service-proxies/service-proxies.ts](../src/CAT.Portal.Web/src/shared/service-proxies/service-proxies.ts) calls:
+The generated proxy in `src/CAT.Portal.Web/src/shared/service-proxies/service-proxies.ts` calls:
 
 - `/api/services/app/FeatureManagement/GetEnabledFeatures`
 
 ### 5. Angular startup caches the enabled flags
 
-During Angular startup, [src/CAT.Portal.Web/src/root.module.ts](../src/CAT.Portal.Web/src/root.module.ts) calls `FeatureManagerService.initialize()`.
+During Angular startup, `src/CAT.Portal.Web/src/root.module.ts` calls `FeatureManagerService.initialize()`.
 
-That service, in [src/CAT.Portal.Web/src/shared/feature-management/feature-manager.service.ts](../src/CAT.Portal.Web/src/shared/feature-management/feature-manager.service.ts), stores the enabled feature names in `_featureFlags`.
+That service, in `src/CAT.Portal.Web/src/shared/feature-management/feature-manager.service.ts`, stores the enabled feature names in `_featureFlags`.
 
 ### 6. UI code asks whether the flag is on
 
@@ -202,13 +202,13 @@ This example flag affects routing and UI behavior in multiple places.
 
 ### Route guard
 
-In [src/CAT.Portal.Web/src/app/products/product-details-v2-can-match.guard.ts](../src/CAT.Portal.Web/src/app/products/product-details-v2-can-match.guard.ts), Angular only allows the V2 route when the flag is enabled.
+In `src/CAT.Portal.Web/src/app/products/product-details-v2-can-match.guard.ts`, Angular only allows the V2 route when the flag is enabled.
 
 That is the clearest page-level decision point.
 
 ### Seller product grid behavior
 
-In [src/CAT.Portal.Web/src/app/products/seller-product-grid/seller-product-grid.component.ts](../src/CAT.Portal.Web/src/app/products/seller-product-grid/seller-product-grid.component.ts), the component sets:
+In `src/CAT.Portal.Web/src/app/products/seller-product-grid/seller-product-grid.component.ts`, the component sets:
 
 - `isSubmitterProductDetailsNewViewEnabled = this.featureManagerService.featureOn(FeatureFlags.SubmitterProductDetailsEnableNewView)`
 
@@ -216,7 +216,7 @@ That lets the grid react differently when the new product-details view is active
 
 ### Product mapping effect behavior
 
-In [src/CAT.Portal.Web/src/app/products/product-details/product-mapping/effects.ts](../src/CAT.Portal.Web/src/app/products/product-details/product-mapping/effects.ts), there is logic that only shows the old success notification when the new-view flag is off.
+In `src/CAT.Portal.Web/src/app/products/product-details/product-mapping/effects.ts`, there is logic that only shows the old success notification when the new-view flag is off.
 
 So this flag does not only affect routing. It also affects behavior inside the page flow.
 
@@ -236,7 +236,7 @@ In the main portal host, this is wired by:
 - `services.AddAzureAppConfiguration()`
 - `app.UseAzureAppConfiguration()`
 
-All of that is in [src/CAT.Portal.WebApi/Catalyst.Web.Host/Startup/Startup.cs](../src/CAT.Portal.WebApi/Catalyst.Web.Host/Startup/Startup.cs).
+All of that is in `src/CAT.Portal.WebApi/Catalyst.Web.Host/Startup/Startup.cs`.
 
 ### 3. The Angular app must fetch the updated enabled-feature list
 
@@ -260,11 +260,11 @@ There are two separate refresh hops:
 
 ### Backend refresh timing
 
-The main portal host is wired to refresh feature flags at runtime through [src/CAT.Portal.WebApi/Catalyst.Web.Host/Startup/Startup.cs](../src/CAT.Portal.WebApi/Catalyst.Web.Host/Startup/Startup.cs) and [src/CAT.Portal.WebApi/Catalyst.Core/Configuration/AzureAppConfig/AzureAppConfigurationBuilder.cs](../src/CAT.Portal.WebApi/Catalyst.Core/Configuration/AzureAppConfig/AzureAppConfigurationBuilder.cs).
+The main portal host is wired to refresh feature flags at runtime through `src/CAT.Portal.WebApi/Catalyst.Web.Host/Startup/Startup.cs` and `src/CAT.Portal.WebApi/Catalyst.Core/Configuration/AzureAppConfig/AzureAppConfigurationBuilder.cs`.
 
 That means the backend is intended to pick up changed feature flag values without redeploying. But it is still not instant.
 
-In [src/CAT.Portal.WebApi/Catalyst.Web.Host/appsettings.json](../src/CAT.Portal.WebApi/Catalyst.Web.Host/appsettings.json), the feature flag cache interval is:
+In `src/CAT.Portal.WebApi/Catalyst.Web.Host/appsettings.json`, the feature flag cache interval is:
 
 - `FeatureFlagRefreshIntervalInSeconds = 360`
 
@@ -274,9 +274,9 @@ So the backend may take up to about 6 minutes to observe the new flag value.
 
 The Angular UI does not appear to subscribe to live feature updates.
 
-Instead, it fetches the enabled-feature list during startup in [src/CAT.Portal.Web/src/root.module.ts](../src/CAT.Portal.Web/src/root.module.ts), which calls `FeatureManagerService.initialize()`.
+Instead, it fetches the enabled-feature list during startup in `src/CAT.Portal.Web/src/root.module.ts`, which calls `FeatureManagerService.initialize()`.
 
-That service in [src/CAT.Portal.Web/src/shared/feature-management/feature-manager.service.ts](../src/CAT.Portal.Web/src/shared/feature-management/feature-manager.service.ts):
+That service in `src/CAT.Portal.Web/src/shared/feature-management/feature-manager.service.ts`:
 
 - Calls the backend once
 - Stores the enabled feature names in memory
@@ -300,9 +300,9 @@ When propagation works correctly, the flow is:
 
 1. Azure App Configuration stores the new feature flag value.
 2. The backend refresh middleware updates the server-side feature view after the configured cache interval.
-3. [src/CAT.Portal.WebApi/Catalyst.Application/Configuration/FeatureManagement/FeatureManagementAppService.cs](../src/CAT.Portal.WebApi/Catalyst.Application/Configuration/FeatureManagement/FeatureManagementAppService.cs) returns the updated enabled-feature list.
-4. Angular calls `/api/services/app/FeatureManagement/GetEnabledFeatures` through the generated client in [src/CAT.Portal.Web/src/shared/service-proxies/service-proxies.ts](../src/CAT.Portal.Web/src/shared/service-proxies/service-proxies.ts).
-5. [src/CAT.Portal.Web/src/shared/feature-management/feature-manager.service.ts](../src/CAT.Portal.Web/src/shared/feature-management/feature-manager.service.ts) caches the new list.
+3. `src/CAT.Portal.WebApi/Catalyst.Application/Configuration/FeatureManagement/FeatureManagementAppService.cs` returns the updated enabled-feature list.
+4. Angular calls `/api/services/app/FeatureManagement/GetEnabledFeatures` through the generated client in `src/CAT.Portal.Web/src/shared/service-proxies/service-proxies.ts`.
+5. `src/CAT.Portal.Web/src/shared/feature-management/feature-manager.service.ts` caches the new list.
 6. Guards and components read the updated flag state and render the new UI path.
 
 ### Key distinction

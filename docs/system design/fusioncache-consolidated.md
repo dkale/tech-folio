@@ -211,10 +211,10 @@ The shared implementation lives in CAT.Foundation, specifically in the RavenDB s
 
 Relevant files:
 
-- [Foundation.Stores.RavenDb.csproj](../../CAT.Foundation/src/Stores/Foundation.Stores.RavenDb/Foundation.Stores.RavenDb.csproj)
-- [RavenStoreServiceCollectionExtensions.cs](../../CAT.Foundation/src/Stores/Foundation.Stores.RavenDb/RavenStoreServiceCollectionExtensions.cs)
-- [IRavenDbCacheService.cs](../../CAT.Foundation/src/Stores/Foundation.Stores.RavenDb/Cache/IRavenDbCacheService.cs)
-- [RavenDbCacheService.cs](../../CAT.Foundation/src/Stores/Foundation.Stores.RavenDb/Cache/RavenDbCacheService.cs)
+- `Foundation.Stores.RavenDb.csproj`
+- `RavenStoreServiceCollectionExtensions.cs`
+- `IRavenDbCacheService.cs`
+- `RavenDbCacheService.cs`
 
 The package references show that the shared store layer depends on:
 
@@ -226,7 +226,7 @@ The package references show that the shared store layer depends on:
 
 FusionCache is registered in the shared service collection extension:
 
-- [RavenStoreServiceCollectionExtensions.cs](../../CAT.Foundation/src/Stores/Foundation.Stores.RavenDb/RavenStoreServiceCollectionExtensions.cs)
+- `RavenStoreServiceCollectionExtensions.cs`
 
 That registration:
 
@@ -243,7 +243,7 @@ Consumers do not usually talk to FusionCache directly. They go through the share
 
 The main workspace abstraction is `IRavenDbCacheService`:
 
-- [IRavenDbCacheService.cs](../../CAT.Foundation/src/Stores/Foundation.Stores.RavenDb/Cache/IRavenDbCacheService.cs)
+- `IRavenDbCacheService.cs`
 
 It exposes methods for:
 
@@ -255,7 +255,7 @@ It exposes methods for:
 
 The implementation is in:
 
-- [RavenDbCacheService.cs](../../CAT.Foundation/src/Stores/Foundation.Stores.RavenDb/Cache/RavenDbCacheService.cs)
+- `RavenDbCacheService.cs`
 
 Internally, that implementation uses FusionCache `GetOrSetAsync`, `RemoveAsync`, and `ClearAsync`.
 
@@ -267,14 +267,14 @@ The clearest active usage in this workspace is in CAT.MDM.Parties.
 
 FusionCache-backed RavenDB caching is wired into startup here:
 
-- [ServicesConfigExtensions.cs](../../CAT.MDM.Parties/src/CAT.MDM.Parties/CAT.MDM.Parties.Api/Extensions/ServicesConfigExtensions.cs)
-- [ServiceCollectionExtensions.cs](../../CAT.MDM.Parties/src/CAT.MDM.Parties/CAT.MDM.Parties.Common/ServiceCollectionExtensions.cs)
+- `ServicesConfigExtensions.cs`
+- `ServiceCollectionExtensions.cs`
 
 #### Cache Options
 
 Cache behavior is controlled through:
 
-- [CachingOptions.cs](../../CAT.MDM.Parties/src/CAT.MDM.Parties/CAT.MDM.Parties.Common/Models/CachingOptions.cs)
+- `CachingOptions.cs`
 
 This class builds FusionCache entry options and can disable caching completely by skipping:
 
@@ -287,7 +287,7 @@ This class builds FusionCache entry options and can disable caching completely b
 
 A direct document load is cached in:
 
-- [PartiesClient.cs](../../CAT.MDM.Parties/src/CAT.MDM.Parties/CAT.MDM.Parties.Client/PartiesClient.cs)
+- `PartiesClient.cs`
 
 This path loads a `Party` document through `IRavenDbCacheService` instead of hitting RavenDB every time.
 
@@ -295,7 +295,7 @@ This path loads a `Party` document through `IRavenDbCacheService` instead of hit
 
 Shared party queries are cached in:
 
-- [PartySharedService.cs](../../CAT.MDM.Parties/src/CAT.MDM.Parties/CAT.MDM.Parties.Common/Services/PartySharedService.cs)
+- `PartySharedService.cs`
 
 These methods use `IRavenDbCacheService.CachedQueryAsync` to cache the results of RavenDB queries.
 
@@ -306,13 +306,13 @@ The read model repository also uses FusionCache-backed calls for:
 
 Example:
 
-- [PartiesReadModelRepository.cs](../../CAT.MDM.Parties/src/CAT.MDM.Parties/CAT.MDM.Parties.ReadModel/Repositories/PartiesReadModelRepository.cs)
+- `PartiesReadModelRepository.cs`
 
 ### Important Distinction: Not All Caching Is FusionCache
 
 This workspace also contains a separate Redis-based cache abstraction that is not FusionCache:
 
-- [RedisCacheManager.cs](../../CAT.Foundation/src/Caching/Foundation.Caching/Redis/RedisCacheManager.cs)
+- `RedisCacheManager.cs`
 
 For example, CAT.MDM.Parties also uses `ICacheManager` directly in some places for distributed cached values beyond the RavenDB FusionCache wrapper.
 
